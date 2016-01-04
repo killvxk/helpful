@@ -39,8 +39,7 @@ output_b64("cmd.exe", "https://www.google.com")
 # Example of decrypting #
 #########################
 # Data from file loaded into your script
-b64_encrypted = """YybaqawesJr1KJjobdWxwTkuh+t9WsSbM4PhFtCqGQ2ifx2SPL/BB9ATgciME2bQ4DrnpfUJhfKZf9k2egI7UfyUdEv0mPjPXLsk
-If2c9FPhSYZKTdwHFDdvpXfxfxZu1y9yfSP3XVFIKhiq6yigYWoRVRy7RMt4LQLgfZ5P/l4="""
+# b64_encrypted = """YybaqawesJr1KJjobdWxwTkuh+t9WsS=="""
 
 def decrypt(data, url):
  	# Key and iv
