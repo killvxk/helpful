@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Threading;
 // cd C:\Windows\Microsoft.NET\Framework\v4*
 // csc.exe  /out:"C:\Utils\port_redir.exe" /platform:x86 "C:\Utils\port_redir.cs"
-
 class Simple_Program
 {
     // The socket relay Receive bytes, Send them back
