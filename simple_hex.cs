@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
+
 /*
 string pi = "\u03a0";
 byte[] ascii = System.Text.Encoding.ASCII.GetBytes(pi);
@@ -26,6 +27,42 @@ namespace teach_hex
 {
     class Program
     {
+        // haha ya pretty nifty!
+        private static bool ntlm_check(string input)
+        {
+            try
+            {
+                Match m = Regex.Match(input, @"4E-54-4C-4D-53-53-50.{4}(?<msg>\d{2})[-0-9a-zA-Z]*");
+                if (m.Value.Length != 0)
+                {
+                    Console.WriteLine("NTLM Search Value  = " + m.Value);
+                    String[] arr = m.Value.Split('-');
+                    byte[] array = new byte[arr.Length];
+                    for (int i = 0; i < arr.Length; i++) array[i] = Convert.ToByte(arr[i], 16);
+                    if (array[8] == 1)
+                    {
+                        Console.WriteLine("You have a NTLM message 1!!");
+                    }
+                    else if (array[8] == 2)
+                    {
+                        Console.WriteLine("You have a NTLM message 2!!");
+                    }
+                    else if (array[8] == 3)
+                    {
+                        Console.WriteLine("You have a NTLM message 3!!");
+                    }
+                    return true;
+               }
+                return false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
+        }
+
+        // print binary
         private static void print_bin(string input)
         {
             string newinput = null;
@@ -61,8 +98,8 @@ namespace teach_hex
             {
                 // The int value of the char
                 int value = Convert.ToInt32(letter);
-                // Convert the decimal value to a hex in string form.
-                string intOutput = value.ToString("D3"); // Decimil to 3 places
+                // Convert the decimal value to a hex in string form
+                string intOutput = value.ToString("D3"); // to 3
                 Console.Write(" {0} ", intOutput);
             }
             Console.Write("\n");
@@ -102,6 +139,56 @@ namespace teach_hex
             Console.ResetColor();
         }
 
+        // bullshit ms crap really
+        static void print_ms_hex_to_chr(string input)
+        {
+            String newinput = null;
+            try
+            {
+                newinput = input.Replace("ms: ", "");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Call binary: ");
+            }
+            //Call our normal print
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("Result: ");
+            String new_in = newinput.Replace("-", "");
+            string[] hex_value = Regex.Split(new_in, "(?<=\\G..)(?!$)");
+            foreach (string letter in hex_value)
+            {
+                Console.Write(" {0}", (char)Convert.ToByte(letter, 16));
+            }
+            Console.Write("\n");
+            Console.ResetColor();
+        }
+
+        // preint ms crap to python, or any other lang.
+        static void print_ms_hex_to_realhex(string input)
+        {
+            String newinput = null;
+            try
+            {
+                newinput = input.Replace("ms: ", "");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Call binary: ");
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("RealHex = \"");
+            String new_in = newinput.Replace("-", "");
+            string[] hex_value = Regex.Split(new_in, "(?<=\\G..)(?!$)");
+            foreach (string letter in hex_value)
+            {
+                Console.Write("\\x{0}", letter);
+            }
+            Console.WriteLine("\"");
+            Console.Write("\n");
+            Console.ResetColor();
+        }
+
 
         // Print the converted hex to char
         static void print_hex_to_chr(string input)
@@ -119,6 +206,7 @@ namespace teach_hex
             Console.ResetColor();
         }
 
+        // a checking routine
         static bool hex_binary_check(string input)
         {
             if (input.Trim().StartsWith("\\x"))
@@ -130,6 +218,16 @@ namespace teach_hex
             {
                 print_bin(input);
                 return true;
+            }
+            else if (input.Trim().StartsWith("ms"))
+            {
+                print_ms_hex_to_chr(input);
+                print_ms_hex_to_realhex(input);
+                return true;
+            }
+            else if (ntlm_check(input))
+            {
+                return true; // it already prited etc..
             }
             else
             {
@@ -144,9 +242,10 @@ namespace teach_hex
                 Console.Write("Input: "); String input = Console.ReadLine();
                 try
                 {
+
                     if (hex_binary_check(input)) // returns true/false
                     {
-                        //pass is just empty!
+                        //pass its empty!
                     }
                     else
                     {
