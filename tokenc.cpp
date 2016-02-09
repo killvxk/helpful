@@ -1,4 +1,4 @@
-/ tokenc.cpp : Defines the entry point for the console application.
+// tokenc.cpp : Defines the entry point for the console application.
 #include "stdafx.h"
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include <stdio.h>
